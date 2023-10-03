@@ -13,24 +13,29 @@ function onAccessApproved(stream){
     }
 
     recorder.ondataavailable = async function(event){
-        let recordedBlob  = event.data
-        let formData = new FormData();
-        formData.append('title', 'GafrecordedBlob')
-        formData.append('video_file', recordedBlob, 'myvideo.webm')
-        let response = await fetch('https://screenrecording.ifeoluwaadefioy.repl.co/app/api/screen-recordings/?format=api', {
-            method: 'POST',
-            body: formData
-        })
-        if (response.status === 201){
-            console.log('Message', response)
-            let getURL = await fetch('https://screenrecording.ifeoluwaadefioy.repl.co/app/api/screenrecordings/?format=api', {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-            console.log('Second Message', getURL.name)
-        }
+        
+          let recordedBlob = event.data;
+          let url = URL.createObjectURL(recordedBlob);
+          
+          let a = document.createElement("a");
+
+          a.style.display = "none";
+
+          a.href = url;
+
+          a.download = "screen-recording.webm";
+
+          document.body.appendChild(a);
+          a.click();
+
+          document.body.removeChild(a);
+
+          URL.revokeObjectURL(url);
+
+          window.open('https://screen-record-video-ui.netlify.app/', '_blank');
+        
+        
+
     }
 }
 
@@ -59,7 +64,7 @@ chrome.runtime.onMessage.addListener( (message, sender, sendResponse)=>{
         if(!recorder) return console.log("no recorder")
 
         recorder.stop();
-        window.open('https://screen-record-video-ui.netlify.app/', '_blank')
+        /*window.open('https://screen-record-video-ui.netlify.app/', '_blank'); */
 
 
     }
