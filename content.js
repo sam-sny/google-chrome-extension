@@ -15,8 +15,9 @@ function onAccessApproved(stream){
     recorder.ondataavailable = async function(event){
         
           let recordedBlob = event.data;
-          let url = URL.createObjectURL(recordedBlob);
           
+          let url = URL.createObjectURL(recordedBlob);
+
           let a = document.createElement("a");
 
           a.style.display = "none";
